@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Ваш пользовательский интерфейс -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tg = window.Telegram.WebApp;
+
+            tg.getUser().then(function(user) {
+                let tgId = user.id;
+
+                fetch('http://yourserver.com/receive_tg_id', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: tgId }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Данные успешно отправлены:', data);
+                })
+                .catch((error) => {
+                    console.error('Ошибка при отправке данных:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
